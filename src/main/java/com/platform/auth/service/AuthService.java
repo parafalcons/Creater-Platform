@@ -29,7 +29,7 @@ public class AuthService {
 
     public boolean registerUser(SignupRequest request) {
         // Check if user exists in User Service
-        boolean exists = userService.existsByUserName(request.getUserName());
+        boolean exists = userService.existsByUserName(request.getUsername());
         if (exists)
             return false;
 
@@ -42,7 +42,7 @@ public class AuthService {
                                         .email(request.getEmail())
                                         .phoneNumber(request.getPhoneNumber())
                                         .password(hashedPassword)
-                                        .userName(request.getUserName())
+                                        .userName(request.getUsername())
                                        .build();
         userService.createUser(userRequest);
         return true;
@@ -50,7 +50,7 @@ public class AuthService {
 
     public String authenticateUser(LoginRequest request) {
         // Fetch user from User Service
-        User user = userService.getUserByUserName(request.getUserName());
+        User user = userService.getUserByUserName(request.getUsernameOrEmail());
 
         // Validate password
         if (user == null || !passwordEncoder.matches(request.getPassword(), user.getPassword())) {
@@ -58,7 +58,7 @@ public class AuthService {
         }
 
         // Generate JWT token
-        return jwtTokenProvider.createToken(user.getUserName());
+        return jwtTokenProvider.createToken(user.getId());
     }
 
     public boolean checkUserExists(String userName) {

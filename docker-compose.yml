@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: blog-platform-db
+    environment:
+      POSTGRES_DB: million_story
+      POSTGRES_USER: rayadav
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - blog-platform-network
+
+  app:
+    build: .
+    container_name: blog-platform-app
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DATABASE_URL: jdbc:postgresql://postgres:5432/million_story
+      DATABASE_USERNAME: rayadav
+      DATABASE_PASSWORD: postgres
+      JWT_SECRET: your-super-secret-jwt-key-change-this-in-production
+      JWT_EXPIRATION: 86400000
+      SERVER_PORT: 8080
+      FILE_UPLOAD_PATH: /app/uploads
+    ports:
+      - "8080:8080"
+    volumes:
+      - uploads_data:/app/uploads
+    depends_on:
+      - postgres
+    networks:
+      - blog-platform-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  uploads_data:
+
+networks:
+  blog-platform-network:
+    driver: bridge
+
+
+

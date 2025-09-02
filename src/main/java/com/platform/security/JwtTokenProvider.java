@@ -26,12 +26,12 @@ public class JwtTokenProvider {
     Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
     // private final SessionService sessionService;
 
-    public String createToken(String userName) {
+    public String createToken(Long userId) {
         // Ensure the key is properly encoded
        
 
         return Jwts.builder()
-            .setSubject(userName)
+            .setSubject(userId.toString())
             .setIssuedAt(new Date())
             .setExpiration(new Date(System.currentTimeMillis() + validityInMilliseconds))
             .signWith(key, SignatureAlgorithm.HS256)

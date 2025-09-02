@@ -1,0 +1,931 @@
+{
+	"info": {
+		"_postman_id": "blog-platform-api",
+		"name": "Blog Platform API",
+		"description": "Complete API collection for Blog Platform with authentication, blog posts, websites, and scraping operations",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "blog-platform"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "User Signup",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fullName\": \"John Doe\",\n    \"userName\": \"johndoe\",\n    \"email\": \"john@example.com\",\n    \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/signup",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"signup"
+							]
+						},
+						"description": "Register a new user account"
+					},
+					"response": []
+				},
+				{
+					"name": "User Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userName\": \"johndoe\",\n    \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Authenticate user and get JWT token"
+					},
+					"response": []
+				},
+				{
+					"name": "User Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/auth/logout",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						},
+						"description": "Logout user and invalidate token"
+					},
+					"response": []
+				},
+				{
+					"name": "Check User Exists",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/auth/exists?userName=johndoe",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"exists"
+							],
+							"query": [
+								{
+									"key": "userName",
+									"value": "johndoe"
+								}
+							]
+						},
+						"description": "Check if a username already exists"
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"john@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/forgot-password",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"forgot-password"
+							]
+						},
+						"description": "Request password reset email"
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"token\": \"reset-token-here\",\n    \"newPassword\": \"newpassword123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/reset-password",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"reset-password"
+							]
+						},
+						"description": "Reset password using token"
+					},
+					"response": []
+				}
+			],
+			"description": "Authentication endpoints for user management"
+		},
+		{
+			"name": "Blog Posts",
+			"item": [
+				{
+					"name": "Get All Blog Posts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/blog-posts",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"blog-posts"
+							]
+						},
+						"description": "Get all blog posts"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Paginated Blog Posts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/blog-posts/paginated?page=0&size=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"blog-posts",
+								"paginated"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Get paginated blog posts"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Blog Post by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/blog-posts/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"blog-posts",
+								"1"
+							]
+						},
+						"description": "Get a specific blog post by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Search Blog Posts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/blog-posts/search?q=technology",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"blog-posts",
+								"search"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "technology"
+								}
+							]
+						},
+						"description": "Search blog posts by keyword"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Blog Post",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"blogTitle\": \"My First Blog Post\",\n    \"content\": \"This is the content of my first blog post. It contains detailed information about the topic.\",\n    \"excerpt\": \"A brief summary of the blog post\",\n    \"featuredImage\": \"https://example.com/image.jpg\",\n    \"author\": \"John Doe\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/blog-posts",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"blog-posts"
+							]
+						},
+						"description": "Create a new blog post (requires authentication)"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Blog Post",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"blogTitle\": \"Updated Blog Post Title\",\n    \"excerpt\": \"Updated excerpt\",\n    \"featuredImage\": \"https://example.com/updated-image.jpg\",\n    \"content\": \"Updated content of the blog post.\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/blog-posts/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"blog-posts",
+								"1"
+							]
+						},
+						"description": "Update an existing blog post (requires authentication)"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Blog Post",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/blog-posts/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"blog-posts",
+								"1"
+							]
+						},
+						"description": "Delete a blog post (requires authentication)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Blog Posts by Website",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/websites/1/blog-posts",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"websites",
+								"1",
+								"blog-posts"
+							]
+						},
+						"description": "Get all blog posts from a specific website"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Blog Posts by User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/1/blog-posts",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"blog-posts"
+							]
+						},
+						"description": "Get all blog posts by a specific user"
+					},
+					"response": []
+				}
+			],
+			"description": "Blog post management endpoints"
+		},
+		{
+			"name": "Websites",
+			"item": [
+				{
+					"name": "Get All Websites",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/websites",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"websites"
+							]
+						},
+						"description": "Get all websites"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Website by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/websites/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"websites",
+								"1"
+							]
+						},
+						"description": "Get a specific website by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Website",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"url\": \"https://medium.com/blog/all\",\n    \"name\": \"Medium Blog\",\n    \"description\": \"Official Medium blog with latest stories\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/websites",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"websites"
+							]
+						},
+						"description": "Add a new website for scraping"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Website",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/websites/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"websites",
+								"1"
+							]
+						},
+						"description": "Delete a website"
+					},
+					"response": []
+				},
+				{
+					"name": "Toggle Website Status",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/websites/1/toggle",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"websites",
+								"1",
+								"toggle"
+							]
+						},
+						"description": "Toggle website active/inactive status"
+					},
+					"response": []
+				}
+			],
+			"description": "Website management endpoints"
+		},
+		{
+			"name": "Scraping Operations",
+			"item": [
+				{
+					"name": "Scrape All Websites",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/scrape/all",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"scrape",
+								"all"
+							]
+						},
+						"description": "Start scraping all active websites"
+					},
+					"response": []
+				},
+				{
+					"name": "Scrape Website by ID",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/websites/1/scrape",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"websites",
+								"1",
+								"scrape"
+							]
+						},
+						"description": "Scrape a specific website by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Scrape Website by URL",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/websites/scrape?url=https://medium.com/blog/all",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"websites",
+								"scrape"
+							],
+							"query": [
+								{
+									"key": "url",
+									"value": "https://medium.com/blog/all"
+								}
+							]
+						},
+						"description": "Scrape a website by URL"
+					},
+					"response": []
+				}
+			],
+			"description": "Web scraping operation endpoints"
+		},
+		{
+			"name": "Statistics",
+			"item": [
+				{
+					"name": "Get Platform Statistics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/stats",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"stats"
+							]
+						},
+						"description": "Get platform statistics including total blog posts, websites, and users"
+					},
+					"response": []
+				}
+			],
+			"description": "Platform statistics endpoints"
+		},
+		{
+			"name": "File Upload",
+			"item": [
+				{
+					"name": "Upload File",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/upload/file",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"upload",
+								"file"
+							]
+						},
+						"description": "Upload a file (requires authentication)"
+					},
+					"response": []
+				}
+			],
+			"description": "File upload endpoints"
+		},
+		{
+			"name": "Posts (Social Media)",
+			"item": [
+				{
+					"name": "Get All Posts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/posts",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"posts"
+							]
+						},
+						"description": "Get all social media posts"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Post",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"imageUrl\": \"https://example.com/image.jpg\",\n    \"caption\": \"This is my post caption\",\n    \"location\": \"New York, NY\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/posts",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"posts"
+							]
+						},
+						"description": "Create a new social media post (requires authentication)"
+					},
+					"response": []
+				},
+				{
+					"name": "Like Post",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/posts/1/like",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"posts",
+								"1",
+								"like"
+							]
+						},
+						"description": "Like a post (requires authentication)"
+					},
+					"response": []
+				},
+				{
+					"name": "Unlike Post",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/posts/1/like",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"posts",
+								"1",
+								"like"
+							]
+						},
+						"description": "Unlike a post (requires authentication)"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Comment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\": \"Great post!\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/posts/1/comments",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"posts",
+								"1",
+								"comments"
+							]
+						},
+						"description": "Add a comment to a post (requires authentication)"
+					},
+					"response": []
+				}
+			],
+			"description": "Social media post endpoints"
+		},
+		{
+			"name": "User Management",
+			"item": [
+				{
+					"name": "Get User Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/profile",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"profile"
+							]
+						},
+						"description": "Get current user profile (requires authentication)"
+					},
+					"response": []
+				},
+				{
+					"name": "Update User Profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fullName\": \"John Updated Doe\",\n    \"bio\": \"Updated bio information\",\n    \"phoneNumber\": \"+1234567890\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/users/profile",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"profile"
+							]
+						},
+						"description": "Update user profile (requires authentication)"
+					},
+					"response": []
+				},
+				{
+					"name": "Follow User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/2/follow",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"2",
+								"follow"
+							]
+						},
+						"description": "Follow a user (requires authentication)"
+					},
+					"response": []
+				},
+				{
+					"name": "Unfollow User",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/2/follow",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"2",
+								"follow"
+							]
+						},
+						"description": "Unfollow a user (requires authentication)"
+					},
+					"response": []
+				}
+			],
+			"description": "User management endpoints"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080/api",
+			"type": "string"
+		},
+		{
+			"key": "auth_token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
+
+
+
+

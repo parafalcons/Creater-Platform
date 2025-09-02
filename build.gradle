@@ -4,7 +4,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.7'
 }
 
-group = 'com.example'
+group = 'com.platform'
 version = '0.0.1-SNAPSHOT'
 
 java {
@@ -23,6 +23,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     // JWT (JJWT)
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
@@ -31,8 +32,7 @@ dependencies {
 
     // Database
     implementation 'org.flywaydb:flyway-core:9.22.3'
-    implementation 'org.flywaydb:flyway-mysql:9.22.3'
-    runtimeOnly 'com.mysql:mysql-connector-j'
+    runtimeOnly 'org.postgresql:postgresql'
 
     // Messaging and HTTP
     implementation 'org.springframework.kafka:spring-kafka:3.3.2'
@@ -42,12 +42,21 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
-    // Optional: AWS SDK (commented out)
-    // implementation 'com.amazonaws:aws-java-sdk-s3:1.12.277'
+    // Web Scraping
+    implementation 'org.jsoup:jsoup:1.21.1'
+    implementation 'org.seleniumhq.selenium:selenium-java:4.21.0'
+
+    // Test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
 }
 
 dependencyManagement {
     imports {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:2023.0.1"
     }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
 }
